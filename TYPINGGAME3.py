@@ -1,16 +1,14 @@
-import pygame
-from pygame.locals import *
-import sys
-import time
-import random
-import pyjokes
+#NAME:Typing Speed Test PyGame 
+#OBJECTIVES:A typing test game is designed to find how fast one types in a given amount of time and promote typing speed. 
+#Expected input:To type exactly the same way as the words or sentencs is given.
+#Expected output: Finds the performance of the typing by calculating the time taken to type, Words Per Minute(WPM) and the accuracy of the typed words.abs
 
 class Game:
 
     def __init__(self):
         self.w = 750
         self.h = 500
-        self.reset = True
+        self.reset = True #
         self.active = False
         self.input_text = ''
         self.word = ''
