@@ -49,7 +49,7 @@ class Game:
         pygame.display.update()
 
     def get_sentence(self):
-        sentence = pyjokes.get_joke()
+        sentence = pyjokes.get_joke()  
         if len(sentence) <= 75:
             return sentence
 
@@ -121,7 +121,7 @@ class Game:
             self.end = True
             print(self.total_time)
 
-            self.results = 'Time:'+str(round(self.total_time)) + " secs   Accuracy:" + str(
+            self.results = 'Time:'+str(round(self.total_time)) + " secs Accuracy:" + str(
                 round(self.accuracy)) + "%" + '   Wpm: ' + str(round(self.wpm))
 
             # draw icon image
