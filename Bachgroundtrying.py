@@ -1,7 +1,3 @@
-#NAME:Typing Speed Test PyGame 
-#OBJECTIVES:A typing test game is designed to find how fast one types in a given amount of time and promote typing speed. 
-#Expected input:To type exactly the same way as the words or sentencs is given.
-#Expected output: Finds the performance of the typing by calculating the time taken to type, Words Per Minute(WPM) and the accuracy of the typed words.abs
 import pygame
 from pygame.locals import*
 import sys
@@ -34,8 +30,12 @@ class Game:
 
         self.bg = pygame.image.load('images/background.jpg')
         self.bg = pygame.transform.scale(self.bg, (750, 500))
+        
+        pygame.mixer.init()  # Initialize the mixer
 
         self.screen = pygame.display.set_mode((self.w, self.h))
+        self.typing_sound = pygame.mixer.Sound('sounds/typing.wav')  # Load the typing sound
+
         pygame.display.set_caption("Chandri's")
         
 
@@ -130,6 +130,69 @@ class Game:
             #screen.blit(self.time_img, (80,320))
             screen.blit(self.time_img, (self.w/2-75, self.h-140))
             self.draw_text(screen, "Reset", self.h - 70, 26, (100, 100, 100))
+    def run(self):
+        while not self.end:
+            self.reset_game()
+            self.running = True
+            while self.running:
+                clock = pygame.time.Clock()
+                self.screen.fill((0, 0, 0), (50, 250, 650, 50))
+                pygame.draw.rect(self.screen, self.head_c, (50, 250, 650, 50), 2)
+                # Update the caption
+                pygame.display.set_caption('Type Speed test | Time left: ' +
+                                           str(int(self.time_left)))
+                self.draw_text(self.screen, self.word, 60, 80, self.word_font, (255, 255, 255))
+                pygame.draw.rect(self.screen, (255, 192, 25), (50, 50, 650, 50), 2)
+
+                # Update the total time text
+                self.draw_text(self.screen, "Total time: " + str(int(self.total_time)), 60, 20, self.word_font, (255, 255, 255))
+
+                self.screen.blit(self.h_image, (50, 50))
+                self.screen.blit(self.h_image, (650, 50))
+                self.draw_text(self.screen, self.input_text, 60, 274, self.result_font, (255, 255, 255))
+
+                pygame.display.update()
+                for event in pygame.event.get():
+                    if event.type == QUIT:
+                        self.end = True
+                        self.running = False
+                    elif event.type == pygame.KEYDOWN:
+                        self.typing_sound.play()  # Play the typing sound
+                        if event.key == pygame.K_RETURN:
+                            print(self.input_text)
+                            # Check if the input text matches the word
+                            if self.input_text == self.word:
+                                self.score += 1
+                                self.total_time += round(time.time() - self.time_start, 2)
+                            else:
+                                print('Wrong input... try again')
+                            self.reset_game()
+                            break
+
+                        # Join the input text
+                        elif event.key == pygame.K_BACKSPACE:
+                            self.input_text = self.input_text[:-1]
+                        else:
+                            try:
+                                self.input_text += event.unicode
+                            except:
+                                pass
+
+                pygame.display.update()
+
+            # Calculate accuracy, words per minute and total time
+            self.results = 'Total Time:' + str(round(self.total_time)) + " secs   Accuracy:" + str(
+                self.accuracy) + "%" + '   Wpm: ' + str(self.wpm)
+
+            # Show the results
+            self.time_img = pygame.image.load('images/icon.png')
+            self.time_img = pygame.transform.scale(self.time_img, (150, 150))
+            # screen.blit(self.time_img, (80,320))
+            screen.blit(self.time_img, (self.w/2-75, self.h-140))
+            self.draw_text(screen, "Reset", self.h - 70, 26, 100, 100)
+
 
             print(self.results)
             pygame.display.update()
+
+
