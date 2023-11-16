@@ -20,10 +20,6 @@ class TestGame(unittest.TestCase):
        self.game.draw_text(MagicMock(), 'test', 274, 26, (250, 250, 250))
        mock_font.assert_called_once_with(None, 26)
 
-#    def test_get_sentence(self):
-#        sentence = self.game.get_sentence()
-#        self.assertIsInstance(sentence, str)
-
    @patch('pygame.display.update')
    def test_show_results(self, mock_update):
        self.game.show_results(MagicMock())
